@@ -19,8 +19,9 @@
           <p class="eyebrow">Lumina weather lab</p>
           <h1>Weather Atlas</h1>
           <p class="lede">
-            A dreamy OpenStreetMap canvas with live atmospheric overlays sampled
-            from Open-Meteo.
+            OpenStreetMap below, a paced shared weather snapshot above — real sampled data with a
+            backend that behaves politely instead of fetching new upstream weather grids every time
+            you move the map.
           </p>
         </div>
 
@@ -35,33 +36,32 @@
         </form>
 
         <section>
-          <div class="section-label">Overlay</div>
+          <div class="section-label">Overlay field</div>
           <div class="chip-row" id="layer-controls">
             <button class="chip active" data-layer="temperature">Temperature</button>
             <button class="chip" data-layer="wind">Wind</button>
-            <button class="chip" data-layer="rain">Rain</button>
+            <button class="chip" data-layer="precipitation">Rain</button>
             <button class="chip" data-layer="cloud">Cloud</button>
           </div>
         </section>
 
-        <section>
-          <div class="section-label">Mood</div>
-          <label class="slider-wrap">
-            <span>Overlay strength</span>
-            <input id="intensity" type="range" min="35" max="100" value="72" />
+        <section class="field-grid">
+          <label class="field-block slider-wrap">
+            <span class="section-label">Overlay opacity</span>
+            <input id="overlay-opacity" type="range" min="0" max="100" value="64" />
           </label>
         </section>
 
         <section class="quick-actions">
           <button id="locate-btn" class="ghost-btn" type="button">Use my location</button>
-          <button id="refresh-btn" class="ghost-btn" type="button">Refresh weather</button>
+          <button id="refresh-btn" class="ghost-btn" type="button">Check snapshot</button>
         </section>
 
         <section class="focus-card glass inset" id="focus-card">
           <div class="focus-header">
             <div>
-              <p class="section-label">Focus point</p>
-              <h2 id="focus-name">Atlantic mood</h2>
+              <p class="section-label">Center weather</p>
+              <h2 id="focus-name">Atlantic focus</h2>
             </div>
             <p id="focus-time" class="focus-time">—</p>
           </div>
@@ -86,36 +86,57 @@
         </section>
 
         <footer class="tiny-note">
-          Pan or zoom to repaint the weather field. Search uses Nominatim and the
-          basemap is © OpenStreetMap contributors.
+          Shared snapshot API on top of Open-Meteo. Search uses Nominatim. Pan and zoom do not
+          trigger new upstream weather fetches.
         </footer>
       </aside>
 
       <main class="map-stage">
         <div id="map"></div>
-        <canvas id="weather-canvas"></canvas>
 
         <div class="floating-card glass hero-card">
-          <p class="eyebrow">Live atmosphere</p>
-          <h2 id="hero-title">Thermal bloom</h2>
+          <p class="eyebrow">Shared field snapshot</p>
+          <h2 id="hero-title">Temperature field</h2>
           <p id="hero-copy">
-            Color fields glow warmer and cooler across the map while the base cartography stays readable beneath.
+            A quota-safe global weather snapshot, rendered smoothly over the map instead of rebuilt
+            on every viewport move.
           </p>
         </div>
 
-        <div class="floating-card glass legend-card">
-          <div class="legend-header">
-            <span id="legend-title">Temperature legend</span>
-            <span id="legend-unit">°C</span>
+        <div class="floating-card glass data-card">
+          <div class="data-header">
+            <span>Field details</span>
+            <span id="data-provider">Weather Atlas API</span>
           </div>
-          <div id="legend-scale" class="legend-scale temp"></div>
-          <div class="legend-labels">
-            <span id="legend-min">Cold</span>
-            <span id="legend-max">Warm</span>
+          <div class="data-grid">
+            <div>
+              <span>Layer</span>
+              <strong id="data-source">Temperature</strong>
+            </div>
+            <div>
+              <span>Grid</span>
+              <strong id="data-grid-size">—</strong>
+            </div>
+            <div>
+              <span>Sample time</span>
+              <strong id="data-time">—</strong>
+            </div>
+            <div>
+              <span>Range</span>
+              <strong id="data-range">—</strong>
+            </div>
+            <div>
+              <span>Cadence</span>
+              <strong id="data-cadence">—</strong>
+            </div>
+            <div>
+              <span>Next refresh</span>
+              <strong id="data-next">—</strong>
+            </div>
           </div>
         </div>
 
-        <div id="status-pill" class="status-pill glass">Loading weather…</div>
+        <div id="status-pill" class="status-pill glass">Loading map…</div>
       </main>
     </div>
 

@@ -1,12 +1,10 @@
 :root {
   color-scheme: dark;
   --bg: #07111f;
-  --panel: rgba(7, 17, 31, 0.68);
-  --panel-strong: rgba(7, 17, 31, 0.88);
+  --panel: rgba(7, 17, 31, 0.7);
   --border: rgba(255, 255, 255, 0.14);
   --text: #ecf4ff;
   --muted: rgba(236, 244, 255, 0.72);
-  --accent: #85d7ff;
   --shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
 }
 
@@ -40,6 +38,26 @@ body::before {
 button,
 input {
   font: inherit;
+}
+
+button,
+input[type="range"] {
+  cursor: pointer;
+}
+
+input[type="date"],
+input[type="search"] {
+  min-width: 0;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  padding: 14px 16px;
+  outline: none;
+}
+
+input[type="range"] {
+  accent-color: #7ad6ff;
 }
 
 .app-shell {
@@ -103,23 +121,12 @@ h1 {
   gap: 10px;
 }
 
-.search-box input {
-  min-width: 0;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text);
-  padding: 14px 16px;
-  outline: none;
-}
-
 .search-box button,
 .ghost-btn,
 .chip {
   border: 0;
   border-radius: 999px;
   color: var(--text);
-  cursor: pointer;
   transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease;
 }
 
@@ -153,13 +160,14 @@ h1 {
   box-shadow: 0 8px 24px rgba(121, 214, 255, 0.18);
 }
 
-.slider-wrap {
+.field-grid {
   display: grid;
-  gap: 10px;
+  gap: 14px;
 }
 
-.slider-wrap span {
-  color: var(--muted);
+.field-block {
+  display: grid;
+  gap: 10px;
 }
 
 .slider-wrap input {
@@ -179,24 +187,28 @@ h1 {
   margin-bottom: 16px;
 }
 
-.focus-grid {
+.focus-grid,
+.data-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
-.focus-grid div {
+.focus-grid div,
+.data-grid div {
   display: grid;
   gap: 4px;
 }
 
-.focus-grid span {
+.focus-grid span,
+.data-grid span {
   color: var(--muted);
   font-size: 0.84rem;
 }
 
-.focus-grid strong {
-  font-size: 1.15rem;
+.focus-grid strong,
+.data-grid strong {
+  font-size: 1.12rem;
 }
 
 .tiny-note {
@@ -208,27 +220,10 @@ h1 {
   min-height: 100vh;
 }
 
-#map,
-#weather-canvas {
+#map {
   position: absolute;
   inset: 0;
-}
-
-#weather-canvas {
-  z-index: 410;
-  pointer-events: none;
-}
-
-#map {
   z-index: 400;
-}
-
-#map .leaflet-control-container {
-  display: none;
-}
-
-#map .leaflet-pane.leaflet-tile-pane {
-  filter: saturate(0.78) brightness(0.74) hue-rotate(196deg) contrast(1.1);
 }
 
 #map::after {
@@ -238,8 +233,12 @@ h1 {
   pointer-events: none;
   z-index: 401;
   background:
-    radial-gradient(circle at center, transparent 0%, rgba(4, 10, 19, 0.1) 48%, rgba(4, 10, 19, 0.5) 100%),
-    linear-gradient(180deg, rgba(5, 10, 18, 0.12), rgba(5, 10, 18, 0.22));
+    radial-gradient(circle at center, transparent 0%, rgba(4, 10, 19, 0.08) 48%, rgba(4, 10, 19, 0.38) 100%),
+    linear-gradient(180deg, rgba(5, 10, 18, 0.08), rgba(5, 10, 18, 0.14));
+}
+
+.weather-field-overlay {
+  mix-blend-mode: screen;
 }
 
 .floating-card {
@@ -261,51 +260,19 @@ h1 {
   line-height: 1.5;
 }
 
-.legend-card {
+.data-card {
   right: 22px;
   bottom: 22px;
-  width: 260px;
+  width: 320px;
 }
 
-.legend-header,
-.legend-labels {
+.data-header {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-}
-
-.legend-header {
+  color: var(--muted);
   font-size: 0.84rem;
-  color: var(--muted);
   margin-bottom: 12px;
-}
-
-.legend-scale {
-  height: 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.legend-scale.temp {
-  background: linear-gradient(90deg, #58b0ff 0%, #7df9ff 18%, #9cffb5 42%, #ffe56d 68%, #ff8159 100%);
-}
-
-.legend-scale.wind {
-  background: linear-gradient(90deg, #76d2ff 0%, #8df3ff 26%, #a1ffe2 45%, #d7fff5 65%, #ffffff 100%);
-}
-
-.legend-scale.rain {
-  background: linear-gradient(90deg, #b7d4ff 0%, #77a7ff 30%, #5c7cff 58%, #5b43d6 100%);
-}
-
-.legend-scale.cloud {
-  background: linear-gradient(90deg, rgba(220, 230, 255, 0.2) 0%, rgba(215, 228, 255, 0.58) 50%, rgba(255, 255, 255, 0.92) 100%);
-}
-
-.legend-labels {
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 0.8rem;
 }
 
 .status-pill {
@@ -322,10 +289,18 @@ h1 {
   background: #06111f;
 }
 
+.leaflet-control-zoom {
+  display: none;
+}
+
 .leaflet-control-attribution {
   font-size: 10px;
   background: rgba(7, 17, 31, 0.55) !important;
   color: rgba(236, 244, 255, 0.82) !important;
+}
+
+.leaflet-control-attribution a {
+  color: rgba(133, 215, 255, 0.9) !important;
 }
 
 @media (max-width: 960px) {
@@ -342,18 +317,14 @@ h1 {
     overflow: auto;
   }
 
-  .map-stage {
-    min-height: 100vh;
-  }
-
   .hero-card {
     top: auto;
-    bottom: 104px;
+    bottom: 182px;
     left: 12px;
     right: 12px;
   }
 
-  .legend-card {
+  .data-card {
     left: 12px;
     right: 12px;
     bottom: 54px;
