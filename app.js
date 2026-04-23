@@ -104,7 +104,7 @@ function mixColor(a, b, t) {
   const c1 = a.match(/\w\w/g).map((part) => parseInt(part, 16));
   const c2 = b.match(/\w\w/g).map((part) => parseInt(part, 16));
   const mixed = c1.map((value, index) => Math.round(lerp(value, c2[index], t)));
-  return `rgb(${mixed[0]} ${mixed[1]} ${mixed[2]})`;
+  return `rgb(${mixed[0]}, ${mixed[1]}, ${mixed[2]})`;
 }
 
 function getColorForLayer(layer, value) {
