@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Atlas</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="control-panel glass">
+        <div>
+          <p class="eyebrow">Lumina weather lab</p>
+          <h1>Weather Atlas</h1>
+          <p class="lede">
+            A dreamy OpenStreetMap canvas with live atmospheric overlays sampled
+            from Open-Meteo.
+          </p>
+        </div>
+
+        <form id="search-form" class="search-box" autocomplete="off">
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Jump to a city, region, or landmark"
+            aria-label="Search for a place"
+          />
+          <button type="submit">Go</button>
+        </form>
+
+        <section>
+          <div class="section-label">Overlay</div>
+          <div class="chip-row" id="layer-controls">
+            <button class="chip active" data-layer="temperature">Temperature</button>
+            <button class="chip" data-layer="wind">Wind</button>
+            <button class="chip" data-layer="rain">Rain</button>
+            <button class="chip" data-layer="cloud">Cloud</button>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-label">Mood</div>
+          <label class="slider-wrap">
+            <span>Overlay strength</span>
+            <input id="intensity" type="range" min="35" max="100" value="72" />
+          </label>
+        </section>
+
+        <section class="quick-actions">
+          <button id="locate-btn" class="ghost-btn" type="button">Use my location</button>
+          <button id="refresh-btn" class="ghost-btn" type="button">Refresh weather</button>
+        </section>
+
+        <section class="focus-card glass inset" id="focus-card">
+          <div class="focus-header">
+            <div>
+              <p class="section-label">Focus point</p>
+              <h2 id="focus-name">Atlantic mood</h2>
+            </div>
+            <p id="focus-time" class="focus-time">—</p>
+          </div>
+          <div class="focus-grid">
+            <div>
+              <span>Temp</span>
+              <strong id="focus-temp">—</strong>
+            </div>
+            <div>
+              <span>Feels</span>
+              <strong id="focus-feels">—</strong>
+            </div>
+            <div>
+              <span>Wind</span>
+              <strong id="focus-wind">—</strong>
+            </div>
+            <div>
+              <span>Cloud</span>
+              <strong id="focus-cloud">—</strong>
+            </div>
+          </div>
+        </section>
+
+        <footer class="tiny-note">
+          Pan or zoom to repaint the weather field. Search uses Nominatim and the
+          basemap is © OpenStreetMap contributors.
+        </footer>
+      </aside>
+
+      <main class="map-stage">
+        <div id="map"></div>
+        <canvas id="weather-canvas"></canvas>
+
+        <div class="floating-card glass hero-card">
+          <p class="eyebrow">Live atmosphere</p>
+          <h2 id="hero-title">Thermal bloom</h2>
+          <p id="hero-copy">
+            Color fields glow warmer and cooler across the map while the base cartography stays readable beneath.
+          </p>
+        </div>
+
+        <div class="floating-card glass legend-card">
+          <div class="legend-header">
+            <span id="legend-title">Temperature legend</span>
+            <span id="legend-unit">°C</span>
+          </div>
+          <div id="legend-scale" class="legend-scale temp"></div>
+          <div class="legend-labels">
+            <span id="legend-min">Cold</span>
+            <span id="legend-max">Warm</span>
+          </div>
+        </div>
+
+        <div id="status-pill" class="status-pill glass">Loading weather…</div>
+      </main>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
