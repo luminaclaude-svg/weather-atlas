@@ -190,6 +190,11 @@ function setStatus(message) {
   statusPill.textContent = message;
 }
 
+function getOverlayBlendMode(modeKey) {
+  if (modeKey === 'cloud') return 'normal';
+  return 'screen';
+}
+
 function getFieldStyle(modeKey, value, stats) {
   if (!Number.isFinite(value)) return 'rgba(0, 0, 0, 0)';
 
@@ -228,16 +233,19 @@ function getFieldStyle(modeKey, value, stats) {
 
   if (modeKey === 'cloud') {
     const t = clamp(value / 100, 0, 1);
+    const eased = Math.pow(t, 0.82);
     const color = colorFromStops(
       [
-        [0, '#7ad5ff'],
-        [0.35, '#cde7ff'],
-        [0.7, '#edf5ff'],
+        [0, '#4d6075'],
+        [0.22, '#7f97ae'],
+        [0.5, '#bccdde'],
+        [0.78, '#edf4fb'],
         [1, '#ffffff'],
       ],
-      t
+      eased
     );
-    return rgba(color, 0.06 + t * 0.44);
+    const alpha = value <= 6 ? 0 : 0.1 + eased * 0.68;
+    return rgba(color, alpha);
   }
 
   if (modeKey === 'wind') {
@@ -272,6 +280,7 @@ const WeatherFieldOverlay = L.Layer.extend({
     this._canvas.style.position = 'absolute';
     this._canvas.style.pointerEvents = 'none';
     this._canvas.style.opacity = String(this._opacity);
+    this._canvas.style.mixBlendMode = getOverlayBlendMode(this._mode);
     activeMap.getPane('fieldPane').appendChild(this._canvas);
     activeMap.on('moveend zoomend resize', this._reset, this);
     this._reset();
@@ -293,6 +302,9 @@ const WeatherFieldOverlay = L.Layer.extend({
 
   setMode(mode) {
     this._mode = mode;
+    if (this._canvas) {
+      this._canvas.style.mixBlendMode = getOverlayBlendMode(mode);
+    }
     this._draw();
     return this;
   },
