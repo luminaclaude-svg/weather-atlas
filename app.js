@@ -233,19 +233,10 @@ function getFieldStyle(modeKey, value, stats) {
 
   if (modeKey === 'cloud') {
     const t = clamp(value / 100, 0, 1);
-    const eased = Math.pow(t, 0.82);
-    const color = colorFromStops(
-      [
-        [0, '#4d6075'],
-        [0.22, '#7f97ae'],
-        [0.5, '#bccdde'],
-        [0.78, '#edf4fb'],
-        [1, '#ffffff'],
-      ],
-      eased
-    );
-    const alpha = value <= 6 ? 0 : 0.1 + eased * 0.68;
-    return rgba(color, alpha);
+    if (t <= 0) return 'rgba(255, 255, 255, 0)';
+
+    const alpha = clamp(Math.pow(t, 1.08) * 0.92, 0, 0.92);
+    return `rgba(255, 255, 255, ${alpha})`;
   }
 
   if (modeKey === 'wind') {
